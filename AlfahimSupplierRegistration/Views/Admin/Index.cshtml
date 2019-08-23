@@ -1,0 +1,137 @@
+﻿@model IEnumerable<AlfahimSupplierRegistration.Models.Supplier>
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+
+<script type="text/javascript">
+    function ViewDocuments(Code) {
+        $("#dialog").dialog({
+            autoOpen: true,
+
+            width: 350,
+            height: 300,
+
+            title: "Supplier Documents",
+            model: true,
+
+            open:function (event,ui){
+
+                $("#dialog").load("ShowDocument?SupplierCode=" + Code + " ");
+            }
+
+        });
+    }
+
+
+</script>
+
+@{
+    ViewBag.Title = "Admin Control Panel";
+ }
+
+@if (Request.IsAuthenticated)
+{
+     <strong>Welcome:@System.Web.HttpContext.Current.User.Identity.Name</strong>
+
+     using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
+     { 
+        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+     }
+}
+
+
+    <h2>Registered Supplier List - <font style="color:red">Total:</font> @Model.Count()</h2>
+
+    @Html.ActionLink("Export to csv", "ExportToCsv", "Admin", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("Export to Excel", "ExportToExcel", "Admin", null, new { @class = "btn btn-info" })
+
+
+
+<hr />
+
+<table id="tblDetail" class="table table-striped table-hover table-bordered table-condensed">
+    <thead>
+        <tr>
+
+
+            <th>
+                @Html.DisplayName("Code")
+            </th>
+            <th>
+                @Html.DisplayName("Company")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Emirates)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone1)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </th>
+            <th>Documents</th>
+            <th>Detail</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameCompany)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Emirates)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+
+                <td><input type="button" onclick=ViewDocuments('@item.SupplierCode') value="View" class="btn btn-xs btn-success col-xs-12" /> </td>
+                <td>@Html.ActionLink("View", "GetSupplierByCode", "Admin", new { SCode = item.SupplierCode }, new { @class = "btn btn-xs btn-warning col-xs-12", target = "_blank" })</td>
+                @*<td>@Html.ActionLink("View", "PrintSupplierReport", "Admin", new { SCode = item.SupplierCode }, new { @class = "btn btn-xs btn-warning col-xs-12", target = "_blank" })</td>
+                *@
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="dialog"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tblDetail").DataTable({
+            "iDisplayLength":15
+            
+
+        });
+
+
+    });
+
+</script>
+

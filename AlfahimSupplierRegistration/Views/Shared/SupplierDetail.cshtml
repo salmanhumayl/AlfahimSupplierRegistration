@@ -1,0 +1,132 @@
+﻿@model  AlfahimSupplierRegistration.ViewModels.SupplierViewModel
+@using AlfahimSupplierRegistration.Helper
+@{
+    Layout = null;
+    ViewBag.Title = "SupplierDetail";
+
+    var TradeLicenseURL = @"http://localhost:3363/UploadFiles\Supplier_GP123456\RES26975.jpg";
+}
+
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<img src="~/Content/Images/Alfahim.jpg" style="padding-left:0px" ; />
+<div >
+    <h2>Supplier Information : @Model.Supplier.SupplierCode</h2>
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+            <td class="warning">Company Name :</td>
+            <td>@Model.Supplier.NameCompany</td>
+            <td class="warning">Emirates :</td>
+            <td>@Model.Supplier.Emirates</td>
+        </tr>
+        <tr>
+            <td class="warning">Address</td>
+            <td>@Model.Supplier.Address</td>
+            <td class="warning">P.O.Box</td>
+            <td>@Model.Supplier.POBox</td>
+        </tr>
+        <tr>
+            <td class="warning">Owner</td>
+            <td>@Model.Supplier.Owner</td>
+            <td class="warning">Email Address</td>
+            <td>@Model.Supplier.EmailAddress</td>
+        </tr>
+        <tr>
+            <td class="warning">Phone1</td>
+            <td>@Model.Supplier.Phone1</td>
+            <td class="warning">Phone2</td>
+            <td>@Model.Supplier.Phone2</td>
+        </tr>
+
+        <tr>
+            <td class="warning">Mobile</td>
+            <td>@Model.Supplier.Mobile</td>
+            <td class="warning">Fax</td>
+            <td>@Model.Supplier.Fax</td>
+        </tr>
+
+        <tr>
+            <td class="warning">Trade licenseNo</td>
+            <td>@Model.Supplier.TradelicenseNo</td>
+            <td class="warning">Issuing Authority</td>
+            <td>@Model.Supplier.IssuingAuthority</td>
+        </tr>
+
+        <tr>
+            <td class="warning">Tradelicense ExpiryDate</td>
+            <td>@Model.Supplier.TradelicenseExpiryDate</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="warning">Deal With</td>
+
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="form-group">
+                    <ul>
+                        @for (var i = 0; i < Model.DealWith.Count(); i++)
+                        {
+                            <li>
+                                @Html.DisplayFor(it => Model.DealWith[i].Name)
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+
+
+            </td>
+        </tr>
+
+
+        <tr>
+            <td colspan="4" class="warning">Bank Details</td>
+        </tr>
+        <tr>
+            <td class="warning">Bank Name</td>
+            <td>@Model.Supplier.BankName</td>
+            <td class="warning">Bank Address</td>
+            <td>@Model.Supplier.BankAddress</td>
+        </tr>
+        <tr>
+            <td class="warning">Beneficiary Name</td>
+            <td>@Model.Supplier.BeneficiaryName</td>
+            <td class="warning">IBANNumber</td>
+            <td>@Model.Supplier.IBANNumber</td>
+        </tr>
+
+        <tr>
+            <td class="warning">SwiftCode</td>
+            <td>@Model.Supplier.SwiftCode</td>
+            <td class="warning">VAT Classification</td>
+            @if (Model.Supplier.VATClassification == "R")
+            {
+                <td>@Html.Raw("Local Vendor(Registered)")</td>
+            }
+            else if (Model.Supplier.VATClassification == "N")
+            {
+                <td>@Html.Raw("Local Vendor (Non-Registered)")</td>
+            }
+            else if (Model.Supplier.VATClassification == "F")
+            {
+                <td>@Html.Raw("Freezone (Registered)")</td>
+            }
+        </tr>
+        <tr>
+            <td class="warning">VAT RegistrationNo</td>
+            <td>@Model.Supplier.VATRegistrationNo</td>
+        </tr>
+        <tr>
+            <td class="warning">Registered On</td>
+            <td>@Model.Supplier.RegisteredOn</td>
+        </tr>
+
+
+    </table>
+</div>
+
+
+
+

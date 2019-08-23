@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#linclose').click(function () {
+            $('#divError').hide('fade');
+        });
+
+
+        $('#btnLogin').click(function () {
+            $('#btnLogin').val("Please Wait");
+            $('#btnLogin').attr('disabled', 'disabled');
+            $.ajax({
+                url: "/account/LoginIn",
+                method: "POST",
+                data: {
+                    email: $('#txtEmail').val(),
+                    password: $('#txtPassword').val(),
+                },
+                success: function (data) {
+
+                    if (data.Message == "true") {
+                        var data1 = "ID=" + data.UserID;
+                       // $.post("/Supplier/CreateNew", data1);
+                        window.location.href = "/Supplier/CreateGO/" + data.UserID
+                       
+
+                    }
+                    else if (data.Message == "false") {
+                        $('#divErrorText').text("Invalid Credentials");
+                        $('#btnLogin').val("Login");
+                        $('#btnLogin').removeAttr('disabled', 'disabled');
+                        $('#divError').show('fade');
+
+                    }
+                    else {
+                        $('#divErrorText').text(data.Message);
+                        $('#divError').show('fade');
+
+                    }
+                },
+                error: function (jqXHR) {
+                    $('#divErrorText').text(jqXHR.responseText);
+                    $('#divError').show('fade');
+                }
+
+            })
+
+        });
+
+
+        $('#btnForgot').click(function () {
+            $('#SuccessModal').modal('show');
+        });
+
+
+
+
+
+    });
+
+
+</script>
+
+
+<h2> Supplier Login</h2>
+
+
+<div class="form-horizontal">
+    <div class="well">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="warning">
+                    <td colspan="2">
+                        Supplier Login
+
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td >Email Address</td>
+                    <td><input type="text" id="txtEmail" maxlength="35" style="width:100%;" /></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" id="txtPassword" maxlength="25" style="width:100%;" /></td>
+                </tr>
+
+
+                <tr class="warning">
+                    <td></td>
+                    <td >
+                        <input id="btnLogin" class="btn btn-warning" type="button" value="Login"  />
+
+                        <a class="btn btn-warning" href="/Supplier/Registration">Register</a>
+
+                        @Html.ActionLink("Forgot Password", "Forgot", "Account",null,new { @class = "btn btn-warning" })
+                       
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div id="divError" class="alert alert-danger collapse">
+            <a id="linclose" class="close" href="#">&times;</a>
+            <div id="divErrorText"></div>
+        </div>
+
+
+    
+
+
+
+    </div>
+</div>
+
+
+

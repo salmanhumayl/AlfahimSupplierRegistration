@@ -1,0 +1,340 @@
+﻿@model AlfahimSupplierRegistration.ViewModels.SupplierViewModel
+@using AlfahimSupplierRegistration.Helper
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Information</h2>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#Supplier_PostedFileTradeLicense').attr("data-val", "false");
+        $('#Supplier_PostedFileOther').attr("data-val", "false");
+        $('#Supplier_PostedFileBankLetter').attr("data-val", "false");
+
+
+
+        if ("@ViewBag.VATClassificationSelection" == "R" || "@ViewBag.VATClassificationSelection"== "F")
+        {
+
+            $('#LeaveRequest-dialog').attr("style", "inline");
+            $("#Supplier_PostedFileVATCertificate").attr("data-val", "false");
+
+        }
+
+        $('#Supplier_VATClassification').change(function () {
+
+            var VATClassification = $('#Supplier_VATClassification').val();
+            if (VATClassification == "R" || VATClassification == "F") {
+                $('#LeaveRequest-dialog').attr("style", "inline");
+            }
+            else {
+                $('#LeaveRequest-dialog').attr("style", "display:none");
+            }
+        });
+
+    });
+
+</script>
+
+
+@{
+    ViewBag.Title = "Edit Supplier";
+    var imageTradeLicenseURL = Model.Supplier.TradeLicenseURL;
+    var imageOtherURL = Model.Supplier.OtherURL;
+    var imageBankLetterURL = Model.Supplier.BankLetterURL;
+    var imageVATCertificateurURL = Model.Supplier.VATCertificateURL;
+
+}
+
+
+<div class="alert alert-warning" role="alert">
+    @Html.ValidationMessage("ConfimationMsg")
+</div>
+
+
+@using (Html.BeginForm("Create", "Supplier", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(model => model.Supplier.User_id)
+        @Html.HiddenFor(model => model.Supplier.ID)
+
+
+
+        <table class="table table-bordered">
+            <tr>
+                <td class="control-label col-md-5">Supplier Code: (e.g. GPXXXXXX)</td>
+                <td>
+                    @Html.DisplayFor(model => model.Supplier.SupplierCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => model.Supplier.SupplierCode)
+
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Deal With:</td>
+                <td>
+                    <div class="form-group">
+                        <ul>
+                            @for (var i = 0; i < Model.DealWith.Count(); i++)
+                            {
+                                <li>
+                                    @Html.CheckBoxFor(it => Model.DealWith[i].Checked)
+
+                                    @Html.HiddenFor(it => Model.DealWith[i].Id)
+                                    @Html.HiddenFor(it => Model.DealWith[i].Name)
+                                    @Html.DisplayFor(it => Model.DealWith[i].Name)
+
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Name: (e.g. as per Trade License)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.NameCompany, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.NameCompany, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Emirates:</td>
+                <td>
+                    @Html.DropDownListFor(model => model.Supplier.Emirates, (SelectList)ViewBag.Emirates, "Select Emirates", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Supplier.Emirates, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Address:</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.Address, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">P.O Box:</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.POBox, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.POBox, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Owner Name:</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.Owner, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.Owner, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Email Address:</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.EmailAddress, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.EmailAddress, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Phone1: (e.g. +971xxxxxxxx)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.Phone1, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.Phone1, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Phone2: (e.g. +971xxxxxxxx) Optional</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.Phone2, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.Phone2, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Mobile: (e.g. +9715xxxxxxxx)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.Mobile, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.Mobile, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Fax: (e.g. +971xxxxxxxx)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.Fax, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.Fax, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Trade license No:</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.TradelicenseNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.TradelicenseNo, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">
+                    Issuing Authority:
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.Supplier.IssuingAuthority, (SelectList)ViewBag.IssuingAuthority, "Select Issuing Authority", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Supplier.IssuingAuthority, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Trade license ExpiryDate:</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.TradelicenseExpiryDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.TradelicenseExpiryDate, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Upload Valid Trade license</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Supplier.PostedFileTradeLicense, new { Type = "file" })
+                    <a href='@Model.Supplier.TradeLicenseURL' target="_blank">View Trade License </a>
+                    @Html.HiddenFor(model => model.Supplier.TradeLicenseURL)
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Upload Other Attachment</td>
+                <td>
+                    @Html.TextBoxFor(model => model.Supplier.PostedFileOther, new { Type = "file" })
+                    <a href='@Model.Supplier.OtherURL' target="_blank">View Other </a>
+                    @Html.HiddenFor(model => model.Supplier.OtherURL)
+
+                </td>
+
+            </tr>
+
+
+            <tr>
+                <td class="control-label col-md-5">Bank Name: (e.g. Mashreq Bank) </td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.BankName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.BankName, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td class="control-label col-md-5">Bank Address:(e.g. Branch Address)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.BankAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.BankAddress, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">Beneficiary Name: (e.g. Account Holder)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.BeneficiaryName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.BeneficiaryName, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">IBAN Number: (e.g. AExxxxxxxxxxxxxxxxxxxxx)</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.IBANNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.IBANNumber, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="control-label col-md-5">Swift Code</td>
+                <td>
+                    @Html.EditorFor(model => model.Supplier.SwiftCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Supplier.SwiftCode, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="control-label col-md-5">Bank Letter </td>
+                <td>
+                    @Html.TextBoxFor(model => model.Supplier.PostedFileBankLetter, new { Type = "file" })
+                    <a href='@Model.Supplier.BankLetterURL' target="_blank">View Letter </a>
+                    @Html.HiddenFor(model => model.Supplier.BankLetterURL)
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="control-label col-md-5">VAT Classification </td>
+                <td>
+                    @Html.DropDownListFor(model => model.Supplier.VATClassification, (SelectList)ViewBag.VATClassification, "Select VAT Classification", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Supplier.VATClassification, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+
+            <tr>
+
+                <td colspan="2">
+                    <div id="LeaveRequest-dialog" style="display:none">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td class="control-label col-md-5">VAT Registration No </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Supplier.VATRegistrationNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Supplier.VATRegistrationNo, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="control-label col-md-5">VAT Certificate</td>
+
+                                <td>
+                                    @Html.TextBoxFor(model => model.Supplier.PostedFileVATCertificate, new { Type = "file" })
+                                    @Html.ValidationMessageFor(model => model.Supplier.PostedFileVATCertificate, "", new { @class = "Error" })
+                                    @if (Model.Supplier.VATCertificateURL!="")
+                                    { 
+                                        <a href='@Model.Supplier.VATCertificateURL' target="_blank">View VAT Certification </a>
+                                        @Html.HiddenFor(model => model.Supplier.VATCertificateURL)
+                                    }
+                                </td>
+
+                            </tr>
+
+                        </table>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <p>
+                        <input type="submit" value="Submit" class="btn btn-warning pull-right" />
+
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+}
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,29 @@
+﻿@model AlfahimSupplierRegistration.ViewModels.SupplierDirecotry
+
+<div class="alert alert-success">
+    @Model.SupplierCode  -
+
+    @Model.NameCompany
+
+</div>
+
+<table class="table table-striped table-hover table-bordered table-condensed">
+    <tr>
+        <td><a href="@Model.TradeLicenseURL" target="_blank">Trade License</a></td>
+    </tr>
+    <tr>
+        <td><a href="@Model.OtherURL" target="_blank">Other Document</a></td>
+    </tr>
+
+    <tr>
+        <td><a href="@Model.BankLetterURL" target="_blank">Bank Letter</a></td>
+    </tr>
+
+    @if(Model.VATClassification=="R"  || Model.VATClassification == "F")
+    { 
+    <tr>
+        <td><a href="@Model.VATCertificateURL" target="_blank">VAT Certification Url</a></td>
+    </tr>
+    }
+</table>
+
